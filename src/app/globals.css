@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-inter), sans-serif;
+
+  --color-ayush-50: #ecfdf5;
+  --color-ayush-100: #d1fae5;
+  --color-ayush-200: #a7f3d0;
+  --color-ayush-300: #6ee7b7;
+  --color-ayush-400: #34d399;
+  --color-ayush-500: #10b981;
+  --color-ayush-600: #059669;
+  --color-ayush-700: #047857;
+  --color-ayush-800: #065f46;
+  --color-ayush-900: #064e3b;
+  --color-ayush-950: #022c22;
+
+  --color-saffron-400: #fbbf24;
+  --color-saffron-500: #f59e0b;
+  --color-saffron-600: #d97706;
+}
+
+/* Custom sleek scrollbar from Stitch */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+.dark-scroll::-webkit-scrollbar-thumb {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+@keyframes pulseSoft {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.45;
+    transform: scale(0.92);
+  }
+}
+
+.status-pulse {
+  animation: pulseSoft 2s infinite ease-in-out;
+}

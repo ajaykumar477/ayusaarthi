@@ -1,0 +1,9 @@
+[
+    {
+        "enabled": false,
+        "status": "DRAFT - verify against the Supreme Court order and the Gazette, then set enabled to true",
+        "pattern": "rule\\s*170|prior approval.*advertis|advertis.*prior approval|advertis.*(ayurved|siddha|unani|asu)",
+        "as_of": "2025-08-11",
+        "note": "Rule 170 of the Drugs Rules, 1945 (prior approval of the State Licensing Authority for advertisements of Ayurvedic, Siddha and Unani drugs) was omitted by a July 2024 notification. A stay on that omission was vacated by the Supreme Court on 11 Aug 2025, so the omission stands and Rule 170 no longer imposes a prior-approval requirement. Older text of the Rules that still shows Rule 170 is outdated on this point."
+    }
+]

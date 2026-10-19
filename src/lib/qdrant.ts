@@ -3,9 +3,16 @@ import { QdrantClient } from "@qdrant/js-client-rest";
 
 export const COLLECTION = process.env.COLLECTION_NAME ?? "ayusaarthi_chunks";
 
+const rawQdrantUrl = process.env.QDRANT_URL ?? "";
+const cleanQdrantUrl = rawQdrantUrl
+  .trim()
+  .replace(/^["']|["']$/g, "")
+  .replace(/\/dashboard.*$/i, "")
+  .replace(/\/+$/, "");
+
 export const qdrant = new QdrantClient({
-  url: process.env.QDRANT_URL,
-  apiKey: process.env.QDRANT_API_KEY,
+  url: cleanQdrantUrl || undefined,
+  apiKey: (process.env.QDRANT_API_KEY ?? "").trim().replace(/^["']|["']$/g, "") || undefined,
 });
 
 export type ChunkPayload = {

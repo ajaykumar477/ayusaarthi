@@ -4,9 +4,17 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 /** Embeds a search query with bge-m3 via any OpenAI-compatible /embeddings endpoint. */
 export async function embedQuery(text: string): Promise<number[]> {
-  const url = process.env.EMBEDDING_API_URL;
-  if (!url) throw new Error("EMBEDDING_API_URL is not set in .env.local.");
-  const key = process.env.EMBEDDING_API_KEY;
+  const rawUrl = process.env.EMBEDDING_API_URL;
+  if (!rawUrl) throw new Error("EMBEDDING_API_URL is not set.");
+  const url = rawUrl.trim().replace(/^["']|["']$/g, "");
+
+  const rawKey = process.env.EMBEDDING_API_KEY;
+  const key = rawKey ? rawKey.trim().replace(/^["']|["']$/g, "") : undefined;
+
+  const rawModel = process.env.EMBEDDING_MODEL || "BAAI/bge-m3";
+  const model = rawModel.trim().replace(/^["']|["']$/g, "") || "BAAI/bge-m3";
+
+  const cleanText = text.trim() || "ayurveda";
 
   let lastError: unknown;
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -16,12 +24,11 @@ export async function embedQuery(text: string): Promise<number[]> {
         signal: AbortSignal.timeout(15_000),
         headers: {
           "Content-Type": "application/json",
-          ...(key ? { Authorization: `Bearer ${key}` } : {}),
+          ...(key && key !== "local" ? { Authorization: `Bearer ${key}` } : {}),
         },
         body: JSON.stringify({
-          model: process.env.EMBEDDING_MODEL ?? "BAAI/bge-m3",
-          input: text,
-          encoding_format: "float",
+          model,
+          input: cleanText,
         }),
       });
 
@@ -31,8 +38,10 @@ export async function embedQuery(text: string): Promise<number[]> {
           await sleep(400);
           continue;
         }
+        const errorText = await res.text().catch(() => "");
+        console.error(`[Embedding] Request failed (${res.status}) [url=${url}, model=${model}]:`, errorText);
         throw new Error(
-          `Embedding request failed (${res.status}). Check EMBEDDING_API_URL, EMBEDDING_API_KEY and EMBEDDING_MODEL.`
+          `Embedding request failed (${res.status}): ${errorText.slice(0, 200)}`
         );
       }
 
